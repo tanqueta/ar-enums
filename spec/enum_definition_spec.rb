@@ -76,9 +76,3 @@ describe "Inline enumeration" do
     end
   end
 end
-
-describe "Enum" do
-  it "default to_s should return name titleized" do
-    ActiveRecord::Enum.new(:name => :green_color).to_s.should == 'Green Color'
-  end
-end
