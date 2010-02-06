@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "ar-enums"
-    gem.summary = %Q{Provides a simple way to define enumerations in ActiveRecord models}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Enumerations for ActiveRecord models}
+    gem.description = %Q{Provides a simple way for defining enumerations in ActiveRecord models}
     gem.email = "emmanicolau@gmail.com"
     gem.homepage = "http://github.com/eeng/ar-enums"
     gem.authors = ["Emma Nicolau"]
