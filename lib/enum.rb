@@ -45,6 +45,10 @@ module ActiveRecord
       self.all = ArEnums::EnumBlock.new.instance_eval(&block)
     end
     
+    def self.[] name_or_id
+      all.detect { |enum| enum == name_or_id }
+    end
+    
     private
     def define_extra_attributes_as_methods attrs
       attrs.each do |method, value|

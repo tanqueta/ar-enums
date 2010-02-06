@@ -21,7 +21,7 @@ describe "Enum" do
     end    
   end
   
-  context "DSL for external enums" do
+  context "External enums" do
     before do
       define_model_class 'Color', 'ActiveRecord::Enum' do
         enumeration do
@@ -43,6 +43,12 @@ describe "Enum" do
       Color.all[1].should be_enum_with(:name => 'green', :rgb => 0x0F0)
       State.all[0].should be_enum_with(:name => 'on', :id => 80)
       State.all[1].should be_enum_with(:name => 'off', :id => 90)
+    end
+    
+    it "should provide [] method to access the enums" do
+      Color[:red].should be_enum_with(:name => 'red')
+      Color['green'].should be_enum_with(:name => 'green')
+      Color[2].should be_enum_with(:name => 'green')
     end
   end
 end
