@@ -6,12 +6,17 @@ module ActiveRecord
     attr_reader :id, :name
     
     def initialize attrs = {}
-      @id = attrs[:id]
-      @name = attrs[:name]
+      @id = attrs[:id].to_i
+      @name = attrs[:name].to_s
+      @label_method = attrs[:label] || :titleize
     end
     
     def == other
-      id.to_s == other.to_s or name.to_s == other.to_s
+      [id.to_s, name].include?(other.to_s)
+    end
+    
+    def to_s
+      name.send @label_method
     end
   end
 end
@@ -42,16 +47,16 @@ module ArEnums
   end
   
   module ClassMethods
-    def enum field_name, values
+    def enum field_name, values, options = {}
       field = EnumField.new field_name
-      enums = create_enums values
+      enums = create_enums values, options
       define_enums_getter field, enums      
       define_enum_getter_and_setter field, enums      
     end
     
     private
-    def create_enums values
-      values.map { |value| ActiveRecord::Enum.new(:id => values.index(value) + 1, :name => value) }
+    def create_enums values, options
+      values.map { |value| ActiveRecord::Enum.new(:id => values.index(value) + 1, :name => value, :label => options[:label]) }
     end
     
     def define_enums_getter field, enums
