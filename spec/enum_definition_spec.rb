@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "Inline enumeration" do
+describe "Internal enumerations" do
   def define_traffic_light *options
     define_model_class 'TrafficLight' do
       enum *options
@@ -53,9 +53,31 @@ describe "Inline enumeration" do
       TrafficLight.states[1].should be_enum_with(:id => 2, :name => 'green')
     end
     
+    it "can be created with a block" do
+      define_model_class 'TrafficLight' do
+        enum :state do
+          red :rgb => 0xF00
+          green :rgb => 0x0F0
+        end
+      end
+      TrafficLight.states[0].should be_enum_with(:id => 1, :name => 'red', :rgb => 0xF00)
+      TrafficLight.states[1].should be_enum_with(:id => 2, :name => 'green', :rgb => 0x0F0)
+    end
+    
+    it "should pass values or block but not both or none"
+    
     it "should provide method to access all enums ready to use in select helpers" do
       TrafficLight.states.map { |enum| [enum.id, enum.name] }.should == [[1, 'red'], [2, 'green'], [3, 'yellow']]
     end    
+    
+    it "class with several enums should be fine" do
+      define_model_class 'Contact' do
+        enum :contact_type, %w[client provider]
+        enum :fiscal_risk, %w[low high]
+      end
+      Contact.contact_types.map(&:name).should == %w[client provider]
+      Contact.fiscal_risks.map(&:name).should == %w[low high]
+    end
   end
   
   context "options" do
@@ -74,6 +96,15 @@ describe "Inline enumeration" do
       TrafficLight.new(:state => :red).state.stop_traffic.should be_true
       TrafficLight.new(:state => :green).state.stop_traffic.should be_false
     end
+    
+    it ":to_s option with blocks enum definition" do
+      define_model_class 'TrafficLight' do
+        enum :state, :label => :upcase do
+          green
+        end
+      end
+      TrafficLight.new(:state => :green).state.to_s.should == 'GREEN'
+    end
   end
   
   context "question methods" do
@@ -91,5 +122,39 @@ describe "Inline enumeration" do
     it "should raise error if tested with inexistant enum" do
       lambda { TrafficLight.new(:state => :green).state.blue? }.should raise_error(NameError)
     end
+  end
+end
+
+describe "External enumerations" do
+  before do
+    define_model_class 'State', 'ActiveRecord::Enum' do
+      enumeration do
+        green :rgb => 0x0F0
+        red :rgb => 0xF00
+      end
+    end    
+  end
+  
+  it "should allow to define enumerations on it's own class" do
+    define_model_class 'TrafficLight' do
+      enum :state
+    end
+    TrafficLight.new(:state => :red).state.should be_enum_with(:name => 'red', :rgb => 0xF00, :id => 2)
+  end
+
+  it "should be posible to access all enums from withing the owner" do
+    define_model_class 'TrafficLight' do
+      enum :state
+    end
+    TrafficLight.states.should equal(State.all)
+  end
+  
+  it "should accept :class_name options to override de class of the external enum" do
+    define_model_class 'TrafficLight' do
+      enum :state_on_weekdays, :class_name => 'State'
+      enum :state_on_weekends, :class_name => 'State'
+    end
+    TrafficLight.state_on_weekdays.should equal(State.all)
+    TrafficLight.state_on_weekends.should equal(State.all)
   end
 end

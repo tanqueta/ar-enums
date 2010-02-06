@@ -17,5 +17,9 @@ module ArEnums
     def foreign_key
       "#{name}_id"
     end
+    
+    def external_class options = {}
+      (options.delete(:class_name) || name).camelize.constantize
+    end
   end
 end

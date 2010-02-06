@@ -38,6 +38,11 @@ module ActiveRecord
       end
     end
     
+    def self.enumeration &block
+      cattr_accessor :all
+      self.all = ArEnums::EnumBlock.new.instance_eval(&block)
+    end
+    
     private
     def define_extra_attributes_as_methods attrs
       attrs.each do |method, value|

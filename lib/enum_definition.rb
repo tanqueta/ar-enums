@@ -33,17 +33,32 @@ module ArEnums
     #   tl.stop_traffic   # => false
     #   tl.rgb            # => 0x0F0
     # 
-    def enum field_name, values, options = {}
+    def enum field_name, *config, &block
+      values, options = extract_values_and_options config
       field = EnumField.new field_name
-      enums = create_enums values, options
+      enums = create_enums field, values, options, &block
       define_enums_getter field, enums      
       define_enum_getter_and_setter field, enums      
     end
     
     private
-    def create_enums values, options
-      values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }.tap do |enums|
-        enums.each { |enum| enum.define_question_methods(enums) }
+    def extract_values_and_options config
+      if config.first.is_a?(Array)
+        [config[0], config[1] || {}]
+      else
+        [[], config.first || {}]
+      end
+    end
+    
+    def create_enums field, values, options, &block
+      if block_given?
+        EnumBlock.new(options).instance_eval(&block)
+      elsif values.any?
+        values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }.tap do |enums|
+          enums.each { |enum| enum.define_question_methods(enums) }
+        end
+      else # External enum
+        field.external_class(options).all
       end
     end
     
