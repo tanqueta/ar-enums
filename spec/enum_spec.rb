@@ -22,8 +22,8 @@ describe "Enum" do
 
       define_model_class 'State', 'ActiveRecord::Enum' do
         enumeration do
-          on
-          off
+          on :id => 80
+          off :id => 90
         end
       end    
     end
@@ -31,8 +31,8 @@ describe "Enum" do
     it "should provide :all method to access the enums" do
       Color.all[0].should be_enum_with(:name => 'red', :rgb => 0xF00)
       Color.all[1].should be_enum_with(:name => 'green', :rgb => 0x0F0)
-      State.all[0].should be_enum_with(:name => 'on', :id => 1)
-      State.all[1].should be_enum_with(:name => 'off', :id => 2)
+      State.all[0].should be_enum_with(:name => 'on', :id => 80)
+      State.all[1].should be_enum_with(:name => 'off', :id => 90)
     end
   end
 end

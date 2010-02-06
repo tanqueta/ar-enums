@@ -7,7 +7,9 @@ module ArEnums
     end
     
     def method_missing method, args = {}
-      @enums << ActiveRecord::Enum.new(@options.merge(args).merge(:id => @last_id += 1, :name => method))
+      attrs = @options.merge(args).merge(:name => method)
+      attrs[:id] ||= @last_id += 1
+      @enums << ActiveRecord::Enum.new(attrs)
     end
   end
 end
