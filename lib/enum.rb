@@ -10,13 +10,14 @@ module ActiveRecord
     end
     
     def self.create_from value, values, options
-      new case value
+      required_attrs = case value
       when String, Symbol
-        options.merge :id => values.index(value) + 1, :name => value
-      when Hash
-        value[:id] ||= values.index(value) + 1
+        { :name => value }
+      else
         value
       end
+      required_attrs[:id] ||= values.index(value) + 1
+      new options.merge(required_attrs)
     end
     
     def == other

@@ -81,9 +81,27 @@ describe "Internal enumerations" do
   end
   
   context "options" do
-    it "should provide :to_s option to override default to_s of Enum" do
-      define_traffic_light :state, %w[green], :label => :upcase
-      TrafficLight.new(:state => :green).state.to_s.should == 'GREEN'
+    context ":label options" do
+      it "should override default to_s of Enum" do
+        define_traffic_light :state, %w[green red], :label => :upcase
+        TrafficLight.new(:state => :green).state.to_s.should == 'GREEN'
+        TrafficLight.new(:state => :red).state.to_s.should == 'RED'
+      end      
+      
+      it "should work with blocks style" do
+        define_model_class 'TrafficLight' do
+          enum :state, :label => :upcase do
+            green
+          end
+        end
+        TrafficLight.new(:state => :green).state.to_s.should == 'GREEN'
+      end
+
+      it "should work with array of hashes style" do
+        define_traffic_light :state, [{ :name => :red }, { :name => :green }], :label => :upcase
+        TrafficLight.new(:state => :red).state.to_s.should == 'RED'
+        TrafficLight.new(:state => :green).state.to_s.should == 'GREEN'
+      end
     end
     
     it "should provide a way to add another columns to the enums" do
@@ -95,16 +113,7 @@ describe "Internal enumerations" do
       TrafficLight.new(:state => :green).state.factor.should == 2.5
       TrafficLight.new(:state => :red).state.stop_traffic.should be_true
       TrafficLight.new(:state => :green).state.stop_traffic.should be_false
-    end
-    
-    it ":to_s option with blocks enum definition" do
-      define_model_class 'TrafficLight' do
-        enum :state, :label => :upcase do
-          green
-        end
-      end
-      TrafficLight.new(:state => :green).state.to_s.should == 'GREEN'
-    end
+    end    
   end
   
   context "question methods" do
