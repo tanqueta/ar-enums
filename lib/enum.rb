@@ -5,7 +5,7 @@ module ActiveRecord
     def initialize attrs = {}
       @id = attrs.delete(:id).to_i
       @name = attrs.delete(:name).to_s
-      @label_method = attrs.delete(:label) || :titleize
+      @label = attrs.delete(:label)
       define_extra_attributes_as_methods attrs
     end
     
@@ -26,7 +26,8 @@ module ActiveRecord
     end
     
     def to_s
-      name.send @label_method
+      @label ||= respond_to?(:desc) ? :desc : :titleize
+      self.respond_to?(@label) ? self.send(@label) : self.name.send(@label)
     end
     
     def to_sym
