@@ -6,7 +6,7 @@ describe "Inline enumeration" do
   end
 
   it "getter should return an Enum" do
-    s = TrafficLight.new(:state => :yellow).state
+    s = TrafficLight.new(:state_id => 3).state
     s.should be_a(ActiveRecord::Enum)
     s.name.should == 'yellow'
     s.id.should == 3

@@ -1,4 +1,5 @@
 require 'active_record'
+require 'object_extensions'
 
 module ActiveRecord
   class Enum
@@ -22,20 +23,17 @@ module ArEnums
   
   class EnumField
     attr_reader :name
+    
     def initialize name
       @name = name.to_s
     end
     
-    def to_s
-      @name
+    def enums_getter
+      name.pluralize
     end
     
-    def getter
-      @name.pluralize
-    end
-    
-    def setter
-      getter + '='
+    def enums_setter
+      "#{enums_getter}="
     end
     
     def foreign_key
@@ -45,16 +43,27 @@ module ArEnums
   
   module ClassMethods
     def enum field_name, values
-      field = EnumField.new(field_name)
-      cattr_accessor field.getter
-      enums = values.map { |value| ActiveRecord::Enum.new(:id => values.index(value) + 1, :name => value) }
-      send field.setter, enums
-      
+      field = EnumField.new field_name
+      enums = create_enums values
+      define_enums_getter field, enums      
+      define_enum_getter_and_setter field, enums      
+    end
+    
+    private
+    def create_enums values
+      values.map { |value| ActiveRecord::Enum.new(:id => values.index(value) + 1, :name => value) }
+    end
+    
+    def define_enums_getter field, enums
+      define_class_method(field.enums_getter) { enums }
+    end
+    
+    def define_enum_getter_and_setter field, enums
       define_method field.name do
-        enums.detect { |enum| enum.id == read_attribute(field.foreign_key) }
-      end
+        enums.detect { |enum| enum.id == read_attribute(field.foreign_key) }    
+      end                                                                       
       
-      define_method "#{field_name}=" do |value|
+      define_method "#{field.name}=" do |value|
         write_attribute field.foreign_key, enums.detect { |enum| enum == value }.try(:id)
       end
     end
