@@ -1,14 +1,27 @@
 require 'active_record'
-require 'object_extensions'
+require 'metaprogramming_extensions'
 
 module ActiveRecord
   class Enum
     attr_reader :id, :name
     
     def initialize attrs = {}
-      @id = attrs[:id].to_i
-      @name = attrs[:name].to_s
-      @label_method = attrs[:label] || :titleize
+      @id = attrs.delete(:id).to_i
+      @name = attrs.delete(:name).to_s
+      @label_method = attrs.delete(:label) || :titleize
+      attrs.each do |method, value|
+        meta_def(method) { value }
+      end
+    end
+    
+    def self.create_from value, values, options
+      new case value
+      when String, Symbol
+        options.merge :id => values.index(value) + 1, :name => value
+      when Hash
+        value[:id] ||= values.index(value) + 1
+        value
+      end
     end
     
     def == other
@@ -56,7 +69,7 @@ module ArEnums
     
     private
     def create_enums values, options
-      values.map { |value| ActiveRecord::Enum.new(:id => values.index(value) + 1, :name => value, :label => options[:label]) }
+      values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }
     end
     
     def define_enums_getter field, enums
