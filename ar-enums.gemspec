@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "README.rdoc",
      "Rakefile",
      "VERSION",
+     "ar-enums.gemspec",
      "lib/ar-enums.rb",
      "lib/enum.rb",
      "lib/enum_definition.rb",

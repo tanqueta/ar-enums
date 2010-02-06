@@ -28,6 +28,10 @@ module ActiveRecord
       name.send @label_method
     end
     
+    def to_sym
+      name.to_sym
+    end
+    
     def define_question_methods all_enums
       all_enums.each do |enum|
         meta_def("#{enum.name}?") { self == enum }
