@@ -75,4 +75,21 @@ describe "Inline enumeration" do
       TrafficLight.new(:state => :green).state.stop_traffic.should be_false
     end
   end
+  
+  context "question methods" do
+    before do
+      define_traffic_light :state, %w[green red]
+    end
+    
+    it "should provide question method" do
+      TrafficLight.new(:state => :green).state.should be_green
+      TrafficLight.new(:state => :green).state.should_not be_red
+      TrafficLight.new(:state => :red).state.should_not be_green
+      TrafficLight.new(:state => :red).state.should be_red
+    end
+    
+    it "should raise error if tested with inexistant enum" do
+      lambda { TrafficLight.new(:state => :green).state.blue? }.should raise_error(NameError)
+    end
+  end
 end

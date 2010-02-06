@@ -42,7 +42,9 @@ module ArEnums
     
     private
     def create_enums values, options
-      values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }
+      values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }.tap do |enums|
+        enums.each { |enum| enum.define_question_methods(enums) }
+      end
     end
     
     def define_enums_getter field, enums
