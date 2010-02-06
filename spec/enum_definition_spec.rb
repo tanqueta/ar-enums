@@ -64,8 +64,6 @@ describe "Internal enumerations" do
       TrafficLight.states[1].should be_enum_with(:id => 2, :name => 'green', :rgb => 0x0F0)
     end
     
-    it "should pass values or block but not both or none"
-    
     it "should provide method to access all enums ready to use in select helpers" do
       TrafficLight.states.map { |enum| [enum.id, enum.name] }.should == [[1, 'red'], [2, 'green'], [3, 'yellow']]
     end    
