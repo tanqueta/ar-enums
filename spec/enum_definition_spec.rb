@@ -129,6 +129,17 @@ describe "Internal enumerations" do
     it "should raise error if tested with inexistant enum" do
       lambda { TrafficLight.new(:state => :green).state.blue? }.should raise_error(NameError)
     end
+    
+    it "block style should also provide question method" do
+      define_model_class 'TrafficLight' do
+        enum :state do
+          green
+          red
+        end
+      end
+      TrafficLight.new(:state => :green).state.should be_green
+      TrafficLight.new(:state => :green).state.should_not be_red
+    end
   end
 end
 

@@ -22,15 +22,14 @@ module ArEnums
     end
     
     def create_enums field, values, options, &block
-      if block_given?
+      enums = if block_given?
         EnumBlock.new(options).instance_eval(&block)
       elsif values.any?
-        values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }.tap do |enums|
-          enums.each { |enum| enum.define_question_methods(enums) }
-        end
-      else # External enum
+        values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }
+      else
         field.external_class(options).all
       end
+      enums.each { |enum| enum.define_question_methods(enums) }
     end
     
     def define_enums_getter field, enums
