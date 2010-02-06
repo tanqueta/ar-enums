@@ -17,19 +17,31 @@ module ArEnums
       if config.first.is_a?(Array)
         [config[0], config[1] || {}]
       else
-        [[], config.first || {}]
+        [[], config[0] || {}]
       end
     end
     
     def create_enums field, values, options, &block
       enums = if block_given?
-        EnumBlock.new(options).instance_eval(&block)
+        create_enums_from_internal_block_style options, &block
       elsif values.any?
-        values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }
+        create_enums_from_internal_array_of_values_or_array_of_hashes_style values, options
       else
-        field.external_class(options).all
+        create_enums_from_external_class field, options
       end
       enums.each { |enum| enum.define_question_methods(enums) }
+    end
+    
+    def create_enums_from_internal_block_style options, &block
+      EnumBlock.new(options).instance_eval(&block)
+    end
+    
+    def create_enums_from_internal_array_of_values_or_array_of_hashes_style values, options
+      values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }
+    end
+    
+    def create_enums_from_external_class field, options
+      field.external_class(options).all
     end
     
     def define_enums_getter field, enums
