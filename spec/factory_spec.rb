@@ -80,5 +80,13 @@ describe "Enums creation styles" do
       end
       enums.map(&:factor).should == [1.5, 2.5]
     end
+
+    it "when extra column is empty should return nil" do
+      enums = Factory.make_enums do
+        red :factor => 1.5
+        green
+      end
+      enums.map(&:factor).should == [1.5, nil]
+    end
   end
 end

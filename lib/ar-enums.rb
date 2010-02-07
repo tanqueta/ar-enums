@@ -1,2 +1,4 @@
 require 'active_record'
-Dir["#{File.dirname(__FILE__)}/*.rb"].reject { |f| f.include?(File.basename(__FILE__)) }.each { |f| require f }
+%w[metaprogramming_extensions options_helper enum enum_block enum_field factory enum_definition].each do |f|
+  require f
+end

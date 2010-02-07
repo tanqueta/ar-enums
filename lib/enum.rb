@@ -1,5 +1,7 @@
 module ActiveRecord
   class Enum
+    extend ActiveRecord::Enumerations::OptionsHelper
+    
     attr_reader :id, :name
     
     def initialize attrs = {}
@@ -41,6 +43,7 @@ module ActiveRecord
     end
     
     def self.enumeration *config, &block
+      add_option config, :enum_class => self
       define_enums_getter Factory.make_enums(*config, &block)
     end
     

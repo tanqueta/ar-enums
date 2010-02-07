@@ -1,6 +1,8 @@
 module ActiveRecord
   module Enumerations
     class Factory
+      include OptionsHelper
+      
       attr_reader :enums
     
       def initialize on_style_not_matched = nil
@@ -14,17 +16,10 @@ module ActiveRecord
       def make_enums *config, &block
         values, options = extract_values_and_options config
         enums = create_enums values, options, &block
+        enums.each { |enum| enum.define_question_methods(enums) }
       end
     
       private
-      def extract_values_and_options config
-        if config.first.is_a?(Array)
-          [config[0], config[1] || {}]
-        else
-          [[], config[0] || {}]
-        end
-      end
-    
       def create_enums values, options, &block
         enums = if block_given?
           block_style options, &block
@@ -33,7 +28,6 @@ module ActiveRecord
         elsif @on_style_not_matched
           @on_style_not_matched.call options
         end
-        enums.each { |enum| enum.define_question_methods(enums) }
       end
     
       def block_style options, &block

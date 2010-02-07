@@ -108,5 +108,17 @@ describe "External enumerations" do
       TrafficLight.state_on_weekdays.should equal(State.all)
       TrafficLight.state_on_weekends.should equal(State.all)
     end    
+    
+    it "should be posible to define new methods in Enum subclass" do
+      define_model_class 'State', 'ActiveRecord::Enum' do
+        enumeration do
+          green :factor => 1
+          red :factor => 2
+        end
+        
+        def double_factor() factor * 2 end
+      end    
+      State.all.map(&:double_factor).should == [2, 4]
+    end    
   end
 end
