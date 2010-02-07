@@ -41,7 +41,7 @@ module ActiveRecord
     end
     
     def self.enumeration *config, &block
-      define_enums_getter ArEnums::Factory.make_enums *config, &block
+      define_enums_getter Factory.make_enums(*config, &block)
     end
     
     def self.[] name_or_id
