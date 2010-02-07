@@ -44,6 +44,15 @@ describe "Enums creation styles" do
       enums = Factory.make_enums [{ :name => :red, :title => 'Rojo' }, { :name => :green, :title => 'Verde' }], :label => :title
       enums.map(&:to_s).should == %w[Rojo Verde]
     end      
+    
+    it "should accept extra columns" do
+      enums = Factory.make_enums [
+        { :name => :red, :factor => 1.5, :stop_traffic => true },
+        { :name => :green, :factor => 2.5, :stop_traffic => false }
+      ]
+      enums.map(&:factor).should == [1.5, 2.5]
+      enums.map(&:stop_traffic).should == [true, false]
+    end
   end
   
   context "block style" do
@@ -62,6 +71,14 @@ describe "Enums creation styles" do
         green :title => 'Verde'
       end
       enums.map(&:to_s).should == %w[Rojo Verde]
+    end
+    
+    it "should accept extra columns" do
+      enums = Factory.make_enums do
+        red :factor => 1.5
+        green :factor => 2.5
+      end
+      enums.map(&:factor).should == [1.5, 2.5]
     end
   end
 end

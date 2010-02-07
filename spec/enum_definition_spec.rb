@@ -45,17 +45,6 @@ describe "Internal enumerations" do
       define_traffic_light :state, %w[green red], :label => :upcase
       TrafficLight.new(:state => :green).state.to_s.should == 'GREEN'
       TrafficLight.new(:state => :red).state.to_s.should == 'RED'
-    end      
-
-    it "should provide a way to add another columns to the enums" do
-      define_traffic_light :state, [
-        { :name => :red, :factor => 1.5, :stop_traffic => true },
-        { :name => :green, :factor => 2.5, :stop_traffic => false }
-      ]
-      TrafficLight.new(:state => :red).state.factor.should == 1.5
-      TrafficLight.new(:state => :green).state.factor.should == 2.5
-      TrafficLight.new(:state => :red).state.stop_traffic.should be_true
-      TrafficLight.new(:state => :green).state.stop_traffic.should be_false
     end
   end
   
