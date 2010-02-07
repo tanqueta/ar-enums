@@ -41,9 +41,7 @@ module ActiveRecord
     end
     
     def self.enumeration *config, &block
-      values, options = extract_values_and_options config
-      enums = create_enums values, options, &block
-      define_enums_getter enums
+      define_enums_getter ArEnums::Factory.make_enums *config, &block
     end
     
     def self.[] name_or_id
@@ -56,31 +54,6 @@ module ActiveRecord
         meta_def(method) { value }
       end
     end    
-    
-    def self.create_enums values, options, &block
-      enums = if block_given?
-        create_enums_from_internal_block_style options, &block
-      elsif values.any?
-        create_enums_from_internal_array_of_values_or_array_of_hashes_style values, options
-      end
-      enums.each { |enum| enum.define_question_methods(enums) }
-    end
-    
-    def self.create_enums_from_internal_block_style options, &block
-      ArEnums::EnumBlock.new(options).instance_eval(&block)
-    end
-    
-    def self.create_enums_from_internal_array_of_values_or_array_of_hashes_style values, options
-      values.map { |value| ActiveRecord::Enum.create_from(value, values, options) }
-    end
-    
-    def self.extract_values_and_options config
-      if config.first.is_a?(Array)
-        [config[0], config[1] || {}]
-      else
-        [[], config[0] || {}]
-      end
-    end
     
     def self.define_enums_getter enums
       cattr_accessor :all

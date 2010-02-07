@@ -50,13 +50,5 @@ describe "Enum" do
       Color['green'].should be_enum_with(:name => 'green')
       Color[2].should be_enum_with(:name => 'green')
     end
-    
-    it "should accept same styles as internal enumerations" do
-      define_model_class 'State', 'ActiveRecord::Enum' do
-        enumeration %w[green red], :label => :upcase
-      end
-      State.all[0].should be_enum_with(:name => 'green', :id => 1, :to_s => 'GREEN')
-      State.all[1].should be_enum_with(:name => 'red', :id => 2, :to_s => 'RED')
-    end
   end
 end
