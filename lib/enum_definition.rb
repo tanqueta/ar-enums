@@ -8,7 +8,7 @@ module ArEnums
       values, options = extract_values_and_options config
       field = EnumField.new field_name
       enums = create_enums field, values, options, &block
-      define_enums_getter field, enums      
+      define_enums_getter field, enums
       define_enum_getter_and_setter field, enums      
     end
     

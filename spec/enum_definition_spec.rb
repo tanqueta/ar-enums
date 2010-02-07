@@ -151,28 +151,28 @@ describe "External enumerations" do
         red :rgb => 0xF00
       end
     end    
-  end
-  
-  it "should allow to define enumerations on it's own class" do
+    
     define_model_class 'TrafficLight' do
       enum :state
     end
-    TrafficLight.new(:state => :red).state.should be_enum_with(:name => 'red', :rgb => 0xF00, :id => 2)
   end
+  
+  context "enums creation" do
+    it "should allow to define enumerations on it's own class" do
+      TrafficLight.new(:state => :red).state.should be_enum_with(:name => 'red', :rgb => 0xF00, :id => 2)
+    end
 
-  it "should be posible to access all enums from withing the owner" do
-    define_model_class 'TrafficLight' do
-      enum :state
+    it "should be posible to access all enums from withing the owner" do
+      TrafficLight.states.should equal(State.all)
     end
-    TrafficLight.states.should equal(State.all)
-  end
-  
-  it "should accept :class_name options to override de class of the external enum" do
-    define_model_class 'TrafficLight' do
-      enum :state_on_weekdays, :class_name => 'State'
-      enum :state_on_weekends, :class_name => 'State'
-    end
-    TrafficLight.state_on_weekdays.should equal(State.all)
-    TrafficLight.state_on_weekends.should equal(State.all)
+
+    it "should accept :class_name options to override de class of the external enum" do
+      define_model_class 'TrafficLight' do
+        enum :state_on_weekdays, :class_name => 'State'
+        enum :state_on_weekends, :class_name => 'State'
+      end
+      TrafficLight.state_on_weekdays.should equal(State.all)
+      TrafficLight.state_on_weekends.should equal(State.all)
+    end    
   end
 end
