@@ -9,6 +9,7 @@ module ActiveRecord
         end
         config.replace new_config
       end
+      alias_method :add_options, :add_option
       
       def extract_values_and_options config
         if config.first.is_a?(Array)

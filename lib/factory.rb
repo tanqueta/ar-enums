@@ -3,10 +3,6 @@ module ActiveRecord
     class Factory
       include OptionsHelper
       
-      def initialize on_style_not_matched = nil
-        @on_style_not_matched = on_style_not_matched
-      end
-    
       def self.make_enums *config, &block
         new.make_enums *config, &block
       end
@@ -25,8 +21,8 @@ module ActiveRecord
           block_style options, &block
         elsif values.any?
           array_of_values_or_hashes_style values, options
-        elsif @on_style_not_matched
-          @on_style_not_matched.call options
+        elsif options[:on_style_not_matched]
+          options[:on_style_not_matched].call options
         end
       end
     

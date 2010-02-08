@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ar-enums}
-  s.version = "0.2.0"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emma Nicolau"]
-  s.date = %q{2010-02-06}
+  s.date = %q{2010-02-07}
   s.description = %q{Provides a simple way for defining enumerations in ActiveRecord models}
   s.email = %q{emmanicolau@gmail.com}
   s.extra_rdoc_files = [
@@ -30,9 +30,12 @@ Gem::Specification.new do |s|
      "lib/enum_block.rb",
      "lib/enum_definition.rb",
      "lib/enum_field.rb",
+     "lib/factory.rb",
      "lib/metaprogramming_extensions.rb",
+     "lib/options_helper.rb",
      "spec/enum_definition_spec.rb",
      "spec/enum_spec.rb",
+     "spec/factory_spec.rb",
      "spec/schema.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
@@ -45,6 +48,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/enum_definition_spec.rb",
      "spec/enum_spec.rb",
+     "spec/factory_spec.rb",
      "spec/schema.rb",
      "spec/spec_helper.rb"
   ]
