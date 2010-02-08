@@ -5,7 +5,6 @@ module ActiveRecord
         @enums = []
         @last_id = 0
         @options = options
-        @options[:enum_class] ||= Enum # TODO esto no seria necesario despues de usar siempre subclases de Enum
       end
     
       def method_missing method, args = {}

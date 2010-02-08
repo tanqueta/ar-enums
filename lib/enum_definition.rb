@@ -5,8 +5,14 @@ module ActiveRecord
     end
   
     module ClassMethods
+      include ActiveRecord::Enumerations::OptionsHelper
+      
       def enum field_name, *config, &block
         field = EnumField.new field_name
+        enum_class = Class.new Enum
+        const_set field.name.camelize, enum_class
+        add_option config, :enum_class => enum_class
+        # TODO refactorizar este on_style a option
         enums = Factory.new(on_style_not_matched_asume_external_style(field)).make_enums *config, &block
         define_enums_getter field, enums
         define_enum_getter_and_setter field, enums      

@@ -3,8 +3,6 @@ module ActiveRecord
     class Factory
       include OptionsHelper
       
-      attr_reader :enums
-    
       def initialize on_style_not_matched = nil
         @on_style_not_matched = on_style_not_matched
       end
@@ -15,8 +13,10 @@ module ActiveRecord
     
       def make_enums *config, &block
         values, options = extract_values_and_options config
-        enums = create_enums values, options, &block
-        enums.each { |enum| enum.define_question_methods(enums) }
+        create_enums(values, options, &block).tap do |enums|
+          define_question_methods options[:enum_class], enums
+          define_extra_columns_methods options[:enum_class], enums
+        end
       end
     
       private
@@ -35,7 +35,28 @@ module ActiveRecord
       end
     
       def array_of_values_or_hashes_style values, options
-        values.map { |value| Enum.create_from(value, values, options) }
+        values.map { |value| options[:enum_class].create_from(value, values, options) }
+      end
+      
+      def define_question_methods enum_class, enums
+        enums.each do |e|
+          enum_class.class_eval %Q{
+            def #{e.name}?
+              self == :#{e.name}
+            end
+          }
+        end
+      end
+      
+      def define_extra_columns_methods enum_class, enums
+        extra_columns_names = enums.map(&:extra_columns).map(&:keys).flatten.uniq
+        extra_columns_names.each do |ecn|
+          enum_class.class_eval %Q{
+            def #{ecn}
+              extra_columns[:#{ecn}]
+            end
+          }
+        end
       end
     end
   end

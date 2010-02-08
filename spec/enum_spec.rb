@@ -1,26 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Enum" do
-  context "label" do
-    it "default to_s should return name titleized if desc is not provided" do
-      ActiveRecord::Enum.new(:name => :green_color).to_s.should == 'Green Color'
-    end
-
-    it "default to_s should return desc if provided" do
-      ActiveRecord::Enum.new(:name => :green, :desc => 'Verde').to_s.should == 'Verde'
-    end
-    
-    it "should allow to specify :label option to use other field as to_s" do
-      ActiveRecord::Enum.new(:name => :green, :descripcion => 'Verde', :label => :descripcion).to_s.should == 'Verde'      
-    end    
-  end
-
-  context "other methods" do
-    it "should provide :to_sym method returning name as symbols" do
-      ActiveRecord::Enum.new(:name => :green).to_sym.should == :green
-    end    
+  it "should provide :to_sym method returning name as symbols" do
+    ActiveRecord::Enum.new(:name => :green).to_sym.should == :green
   end
   
+  it "should store extra columns as a hash without the :enum_class that is passed from other classes" do
+    ActiveRecord::Enum.new(:name => :green, :factor => 1.5, :enum_class => Class.new).extra_columns.should == { :factor => 1.5 }
+  end
+
   context "External enums" do
     before do
       define_model_class 'Color', 'ActiveRecord::Enum' do

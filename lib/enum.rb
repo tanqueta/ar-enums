@@ -2,13 +2,13 @@ module ActiveRecord
   class Enum
     extend ActiveRecord::Enumerations::OptionsHelper
     
-    attr_reader :id, :name
+    attr_reader :id, :name, :extra_columns
     
     def initialize attrs = {}
       @id = attrs.delete(:id).to_i
       @name = attrs.delete(:name).to_s
       @label = attrs.delete(:label)
-      define_extra_attributes_as_methods attrs
+      @extra_columns = attrs.reject { |k, _| k == :enum_class }
     end
     
     def self.create_from value, values, options
@@ -36,15 +36,9 @@ module ActiveRecord
       name.to_sym
     end
     
-    def define_question_methods all_enums
-      all_enums.each do |enum|
-        meta_def("#{enum.name}?") { self == enum }
-      end
-    end
-    
     def self.enumeration *config, &block
       add_option config, :enum_class => self
-      define_enums_getter Factory.make_enums(*config, &block)
+      define_enums_getter ActiveRecord::Enumerations::Factory.make_enums(*config, &block)
     end
     
     def self.[] name_or_id
@@ -52,12 +46,6 @@ module ActiveRecord
     end
     
     private
-    def define_extra_attributes_as_methods attrs
-      attrs.each do |method, value|
-        meta_def(method) { value }
-      end
-    end    
-    
     def self.define_enums_getter enums
       cattr_accessor :all
       self.all = enums

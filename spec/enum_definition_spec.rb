@@ -75,6 +75,10 @@ describe "Internal enumerations" do
       TrafficLight.new(:state => :green).state.should_not be_red
     end
   end
+  
+  it "should be instances of a new subclass of Enum" do
+    TrafficLight.states.first.should be_a(TrafficLight::State)
+  end
 end
 
 describe "External enumerations" do
@@ -108,6 +112,10 @@ describe "External enumerations" do
       TrafficLight.state_on_weekdays.should equal(State.all)
       TrafficLight.state_on_weekends.should equal(State.all)
     end    
+    
+    it "external enums should be instances of the subclass of Enum" do
+      State.all.each { |s| s.should be_a(State) }
+    end
     
     it "should be posible to define new methods in Enum subclass" do
       define_model_class 'State', 'ActiveRecord::Enum' do
