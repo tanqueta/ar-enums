@@ -3,11 +3,11 @@ module ActiveRecord
     extend ActiveRecord::Enumerations::OptionsHelper
     
     attr_reader :id, :name, :extra_columns
+    class_inheritable_accessor :label_method
     
     def initialize attrs = {}
       @id = attrs.delete(:id).to_i
       @name = attrs.delete(:name).to_s
-      @label = attrs.delete(:label)
       @extra_columns = attrs.reject { |k, _| k == :enum_class }
     end
     
@@ -28,8 +28,7 @@ module ActiveRecord
     end
     
     def to_s
-      @label ||= respond_to?(:desc) ? :desc : :titleize
-      self.respond_to?(@label) ? self.send(@label) : self.name.send(@label)
+      self.respond_to?(label_method) ? self.send(label_method) : self.name.send(label_method)
     end
     
     def to_sym

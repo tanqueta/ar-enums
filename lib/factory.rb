@@ -9,6 +9,7 @@ module ActiveRecord
     
       def make_enums *config, &block
         values, options = extract_values_and_options config
+        options[:enum_class].label_method = options.delete(:label) || :desc
         create_enums(values, options, &block).tap do |enums|
           define_question_methods options[:enum_class], enums
           define_extra_columns_methods options[:enum_class], enums
