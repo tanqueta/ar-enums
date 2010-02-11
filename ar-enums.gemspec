@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Emma Nicolau"]
+  s.authors = ["Emmanuel Nicolau"]
   s.date = %q{2010-02-11}
   s.description = %q{Provides a simple way for defining enumerations in ActiveRecord models}
   s.email = %q{emmanicolau@gmail.com}
