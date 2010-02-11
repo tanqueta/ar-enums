@@ -1,6 +1,6 @@
 = ar-enums
 
-ActiveRecord::Enumerations is a simple solution for defining enumerations in your Rails models.
+This is a simple solution for defining enumerations in your Rails models.
 
 == Description
 
@@ -102,6 +102,11 @@ In the array of values style the default is the name titleized but you can pass 
 
 If you use the block o array of hashes sintax and add a <tt>:desc</tt> column it will be used as <tt>#to_s</tt>, unless a <tt>:label</tt> option is passed.
 
+== TODO
+
+* Remove the dependency with ActiveRecord so it can be used outside Rails.
+* Allow to store enums in the database.
+
 == Note on Patches/Pull Requests
  
 * Fork the project.
@@ -114,4 +119,4 @@ If you use the block o array of hashes sintax and add a <tt>:desc</tt> column it
 
 == Copyright
 
-Copyright (c) 2010 Emma Nicolau. See LICENSE for details.
+Copyright (c) 2010 Emmanuel Nicolau. See LICENSE for details.

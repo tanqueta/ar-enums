@@ -9,7 +9,7 @@ begin
     gem.description = %Q{Provides a simple way for defining enumerations in ActiveRecord models}
     gem.email = "emmanicolau@gmail.com"
     gem.homepage = "http://github.com/eeng/ar-enums"
-    gem.authors = ["Emma Nicolau"]
+    gem.authors = ["Emmanuel Nicolau"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end

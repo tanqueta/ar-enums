@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "ar-enums.gemspec",
+     "examples/internal_enums.rb",
      "lib/ar-enums.rb",
      "lib/enum.rb",
      "lib/enum_block.rb",
