@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emma Nicolau"]
-  s.date = %q{2010-02-07}
+  s.date = %q{2010-02-11}
   s.description = %q{Provides a simple way for defining enumerations in ActiveRecord models}
   s.email = %q{emmanicolau@gmail.com}
   s.extra_rdoc_files = [
@@ -50,7 +50,8 @@ Gem::Specification.new do |s|
      "spec/enum_spec.rb",
      "spec/factory_spec.rb",
      "spec/schema.rb",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "examples/internal_enums.rb"
   ]
 
   if s.respond_to? :specification_version then

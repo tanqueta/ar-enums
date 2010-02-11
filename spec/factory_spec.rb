@@ -15,10 +15,13 @@ describe "Enums creation styles" do
       enums[1].should be_enum_with(:id => 2, :name => 'green')
       enums[2].should be_enum_with(:id => 3, :name => 'blue')
     end
+    
+    it "default to_s should be name titleized" do
+      make_enums(%w[green red]).map(&:to_s).should == %w[Green Red]      
+    end
 
     it "should override default to_s" do
-      enums = make_enums %w[green red], :label => :upcase
-      enums.map(&:to_s).should == %w[GREEN RED]
+      make_enums(%w[green red], :label => :upcase).map(&:to_s).should == %w[GREEN RED]
     end
   end
   

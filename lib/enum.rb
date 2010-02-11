@@ -8,7 +8,7 @@ module ActiveRecord
     def initialize attrs = {}
       @id = attrs.delete(:id).to_i
       @name = attrs.delete(:name).to_s
-      @extra_columns = attrs.reject { |k, _| k == :enum_class }
+      @extra_columns = attrs.reject { |k, _| [:enum_class, :on_style_not_matched].include?(k) }
     end
     
     def self.create_from value, values, options
@@ -28,7 +28,7 @@ module ActiveRecord
     end
     
     def to_s
-      self.respond_to?(label_method) ? self.send(label_method) : self.name.send(label_method)
+      try_labelize(self, :desc) || try_labelize(name, :titleize)
     end
     
     def to_sym
@@ -48,6 +48,10 @@ module ActiveRecord
     def self.define_enums_getter enums
       cattr_accessor :all
       self.all = enums
+    end
+    
+    def try_labelize object, default_method
+      object.respond_to?(label_method) && object.send(label_method) or object.respond_to?(default_method) && object.send(default_method)
     end
   end
 end
