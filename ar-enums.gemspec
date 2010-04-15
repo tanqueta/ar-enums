@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emmanuel Nicolau"]
-  s.date = %q{2010-02-11}
+  s.date = %q{2010-04-15}
   s.description = %q{Provides a simple way for defining enumerations in ActiveRecord models}
   s.email = %q{emmanicolau@gmail.com}
   s.extra_rdoc_files = [
@@ -44,7 +44,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/eeng/ar-enums}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Enumerations for ActiveRecord models}
   s.test_files = [
     "spec/enum_definition_spec.rb",
