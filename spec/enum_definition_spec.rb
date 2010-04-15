@@ -83,7 +83,18 @@ end
 
 describe "External enumerations" do
   before do
-    define_model_class 'State', 'ActiveRecord::Enum' do
+    define_model_class 'CountryState', 'ActiveRecord::Enum' do
+      enumeration do
+        ca
+        tx
+      end
+    end
+
+    define_model_class 'Country' do
+      enum :state, :class_name => 'CountryState'
+    end    
+    
+    define_model_class 'TrafficLightState', 'ActiveRecord::Enum' do
       enumeration do
         green :rgb => 0x0F0
         red :rgb => 0xF00
@@ -91,7 +102,7 @@ describe "External enumerations" do
     end    
     
     define_model_class 'TrafficLight' do
-      enum :state
+      enum :state, :class_name => 'TrafficLightState'
     end
   end
   
@@ -101,20 +112,21 @@ describe "External enumerations" do
     end
 
     it "should be posible to access all enums from withing the owner" do
-      TrafficLight.states.should equal(State.all)
+      TrafficLight.states.should equal(TrafficLightState.all)
+      Country.states.should equal(CountryState.all)
     end
 
     it "should accept :class_name options to override de class of the external enum" do
       define_model_class 'TrafficLight' do
-        enum :state_on_weekdays, :class_name => 'State'
-        enum :state_on_weekends, :class_name => 'State'
+        enum :state_on_weekdays, :class_name => 'TrafficLightState'
+        enum :state_on_weekends, :class_name => 'TrafficLightState'
       end
-      TrafficLight.state_on_weekdays.should equal(State.all)
-      TrafficLight.state_on_weekends.should equal(State.all)
+      TrafficLight.state_on_weekdays.should equal(TrafficLightState.all)
+      TrafficLight.state_on_weekends.should equal(TrafficLightState.all)
     end    
     
     it "external enums should be instances of the subclass of Enum" do
-      State.all.each { |s| s.should be_a(State) }
+      TrafficLightState.all.each { |s| s.should be_a(TrafficLightState) }
     end
     
     it "should be posible to define new methods in Enum subclass" do

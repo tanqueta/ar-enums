@@ -12,11 +12,4 @@ class Object
   def class_def name, &blk
     class_eval { define_method name, &blk }
   end
-
-  # Defines a class method
-  def define_class_method name, &blk
-    self.class.instance_eval do
-      define_method name, &blk
-    end
-  end
 end

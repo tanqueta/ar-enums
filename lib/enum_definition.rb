@@ -23,7 +23,7 @@ module ActiveRecord
       end
     
       def define_enums_getter field, enums
-        define_class_method(field.enums_getter) { enums }
+        meta_def(field.enums_getter) { enums }
       end
     
       def define_enum_getter_and_setter field, enums
