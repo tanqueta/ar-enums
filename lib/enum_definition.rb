@@ -19,7 +19,11 @@ module ActiveRecord
     
       private
       def asume_external_style field
-        lambda { |options| field.external_class(options).all }
+        lambda { |options| external_class(field, options).all }
+      end
+      
+      def external_class field, options = {}
+        compute_type options.delete(:class_name) || field.name.camelize
       end
     
       def define_enums_getter field, enums
