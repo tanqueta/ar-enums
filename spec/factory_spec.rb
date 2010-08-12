@@ -4,7 +4,7 @@ describe "Enums creation styles" do
   include ActiveRecord::Enumerations::OptionsHelper
 
   def make_enums *config, &block
-    add_option config, :enum_class => ActiveRecord::Enum
+    add_option config, :class_name => ActiveRecord::Enum
     ActiveRecord::Enumerations::Factory.make_enums *config, &block
   end
   

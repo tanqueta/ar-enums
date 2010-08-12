@@ -36,7 +36,7 @@ module ActiveRecord
     end
     
     def self.enumeration *config, &block
-      add_option config, :enum_class => self
+      add_option config, :class_name => self
       define_enums_getter ActiveRecord::Enumerations::Factory.make_enums(*config, &block)
     end
     

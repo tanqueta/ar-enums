@@ -83,23 +83,23 @@ end
 
 describe "External enumerations" do
   before do
-    define_model_class 'CountryState', 'ActiveRecord::Enum' do
+    define_model_class 'State', 'ActiveRecord::Enum' do
       enumeration do
         ca
         tx
       end
     end
-
+    
     define_model_class 'Country' do
-      enum :state, :class_name => 'CountryState'
-    end    
+      enum :state
+    end
     
     define_model_class 'TrafficLightState', 'ActiveRecord::Enum' do
       enumeration do
         green :rgb => 0x0F0
         red :rgb => 0xF00
       end
-    end    
+    end
     
     define_model_class 'TrafficLight' do
       enum :state, :class_name => 'TrafficLightState'
@@ -113,7 +113,7 @@ describe "External enumerations" do
 
     it "should be posible to access all enums from withing the owner" do
       TrafficLight.states.should equal(TrafficLightState.all)
-      Country.states.should equal(CountryState.all)
+      Country.states.should equal(State.all)
     end
 
     it "should accept :class_name options to override de class of the external enum" do
@@ -139,6 +139,13 @@ describe "External enumerations" do
         def double_factor() factor * 2 end
       end    
       State.all.map(&:double_factor).should == [2, 4]
-    end    
+    end 
+    
+    it "should not define new constant form enum class" do
+      define_model_class 'TrafficLight' do
+        enum :estado, :class_name => 'TrafficLightState'
+      end
+      expect { TrafficLight.const_get(:Estado) }.to raise_error NameError
+    end   
   end
 end
