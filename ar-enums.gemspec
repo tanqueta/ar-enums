@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ar-enums}
-  s.version = "0.3.2"
+  s.version = "0.3.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Emmanuel Nicolau"]
-  s.date = %q{2010-08-09}
+  s.date = %q{2010-08-12}
   s.description = %q{Provides a simple way for defining enumerations in ActiveRecord models}
   s.email = %q{emmanicolau@gmail.com}
   s.extra_rdoc_files = [
