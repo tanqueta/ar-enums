@@ -44,6 +44,10 @@ module ActiveRecord
       all.detect { |enum| enum == name_or_id }
     end
     
+    def self.find_all_by_id ids
+      all.select { |enum| ids.include? enum.id }
+    end
+    
     private
     def self.define_enums_getter enums
       cattr_accessor :all

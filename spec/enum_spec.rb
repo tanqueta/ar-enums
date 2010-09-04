@@ -15,6 +15,7 @@ describe "Enum" do
         enumeration do
           red :rgb => 0xF00
           green :rgb => 0x0F0
+          blue :rgb => 0x00F
         end
       end    
 
@@ -37,6 +38,14 @@ describe "Enum" do
       Color[:red].should be_enum_with(:name => 'red')
       Color['green'].should be_enum_with(:name => 'green')
       Color[2].should be_enum_with(:name => 'green')
+    end
+  end
+  
+  context "finders" do
+    it "find_all_by_id" do
+      Color.find_all_by_id([1, 2, 3, 4]).should == Color.all
+      Color.find_all_by_id([1, 3]).should == [:red, :blue]
+      Color.find_all_by_id([]).should == []
     end
   end
 end
