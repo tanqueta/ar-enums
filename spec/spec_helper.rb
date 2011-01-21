@@ -1,6 +1,6 @@
 require 'rspec'
 require 'ruby-debug'
-require 'ar_enums'
+require 'ar-enums'
 
 RSpec.configure do |config|
   config.before :suite do
