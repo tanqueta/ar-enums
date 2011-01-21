@@ -40,7 +40,7 @@ module ActiveRecord
       end
       
       def create_enums
-        enums = if @block
+        if @block
           block_style
         elsif @values.any?
           array_of_values_or_hashes_style

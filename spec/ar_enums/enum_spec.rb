@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe "Enum" do
   it "should provide :to_sym method returning name as symbols" do
@@ -47,5 +47,20 @@ describe "Enum" do
       Color.find_all_by_id([1, 3]).should == [:red, :blue]
       Color.find_all_by_id([]).should == []
     end
+  end
+  
+  it "in? should check if == to any" do
+    define_model_class 'Color', 'ActiveRecord::Enum' do
+      enumeration do
+        red :rgb => 0xF00
+        green :rgb => 0x0F0
+        blue :rgb => 0x00F
+      end
+    end    
+    
+    Color[:red].should be_in :red, :blue
+    Color[:red].should be_in :green, :red, :blue
+    Color[:red].should be_in Color[:red]
+    Color[:red].should_not be_in :blue
   end
 end

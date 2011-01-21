@@ -48,6 +48,10 @@ module ActiveRecord
       all.select { |enum| ids.include? enum.id }
     end
     
+    def in? *enums
+      enums.any? { |e| self == e }
+    end
+    
     private
     def self.define_enums_getter enums
       cattr_accessor :all
