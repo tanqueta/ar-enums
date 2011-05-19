@@ -44,7 +44,7 @@ module ActiveRecord
       all.detect { |enum| enum == name_or_id }
     end
     
-    def self.find_all_by_id ids
+    def self.find_all_by_id ids, options = {}
       all.select { |enum| ids.include? enum.id }
     end
     
