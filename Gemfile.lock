@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ar-enums (0.3.7)
+    ar-enums (0.3.8)
       activerecord
       rake
 
