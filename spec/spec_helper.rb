@@ -1,5 +1,4 @@
 require 'rspec'
-require 'ruby-debug'
 require 'ar-enums'
 
 RSpec.configure do |config|

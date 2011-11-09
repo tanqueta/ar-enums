@@ -3,7 +3,7 @@ module ActiveRecord
     extend ActiveRecord::Enumerations::OptionsHelper
     
     attr_reader :id, :name, :extra_columns
-    class_inheritable_accessor :label_method
+    class_attribute :label_method
     
     def initialize attrs = {}
       @id = attrs.delete(:id).to_i
