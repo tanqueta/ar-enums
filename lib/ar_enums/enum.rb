@@ -26,6 +26,11 @@ module ActiveRecord
       return id == other.id if other.is_a?(Enum)
       [id.to_s, name].include?(other.to_s)
     end
+    alias_method :eql?, :==
+    
+    def hash
+      id.hash
+    end
     
     def to_s
       try_labelize(self, :desc) || try_labelize(name, :titleize)
@@ -42,6 +47,9 @@ module ActiveRecord
     
     def self.[] name_or_id
       all.detect { |enum| enum == name_or_id }
+    end
+    class << self
+      alias_method :find_by_id, :[]
     end
     
     def self.find_all_by_id ids, options = {}
