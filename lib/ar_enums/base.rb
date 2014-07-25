@@ -1,6 +1,6 @@
-module ActiveRecord
-  class Enum
-    extend ActiveRecord::Enumerations::OptionsHelper
+module ArEnums
+  class Base
+    extend OptionsHelper
     
     attr_reader :id, :name, :extra_columns
     class_attribute :label_method
@@ -14,7 +14,7 @@ module ActiveRecord
     def self.create_from value, values, options
       required_attrs = case value
       when String, Symbol
-        { :name => value }
+        { name: value }
       else
         value
       end
@@ -23,7 +23,7 @@ module ActiveRecord
     end
     
     def == other
-      return id == other.id if other.is_a?(Enum)
+      return id == other.id if other.is_a?(Base)
       [id.to_s, name].include?(other.to_s)
     end
     alias_method :eql?, :==
@@ -41,8 +41,8 @@ module ActiveRecord
     end
     
     def self.enumeration *config, &block
-      add_option config, :class_name => self
-      define_enums_getter ActiveRecord::Enumerations::Factory.make_enums(*config, &block)
+      add_option config, class_name: self
+      define_enums_getter ArEnums::Factory.make_enums(*config, &block)
     end
     
     def self.[] name_or_id

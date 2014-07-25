@@ -1,21 +1,22 @@
-module ActiveRecord
-  module Enumerations
+module ArEnums
+  module EnumDefinition
     def self.included(base)
       base.send :extend, ClassMethods
     end
   
     module ClassMethods
-      include ActiveRecord::Enumerations::OptionsHelper
+      include ArEnums::OptionsHelper
       
       def enum field_name, *config, &block
         field = EnumField.new field_name
-        add_option config, :field => field, :active_record => self
+        add_option config, field: field, active_record: self
         enums = Factory.make_enums *config, &block
         define_enums_getter field, enums
         define_enum_getter_and_setter field, enums      
       end
     
       private
+      
       def asume_external_style field
         lambda { |options| external_class(field, options).all }
       end
@@ -41,4 +42,4 @@ module ActiveRecord
   end
 end
 
-ActiveRecord::Base.send :include, ActiveRecord::Enumerations
+ActiveRecord::Base.send :include, ArEnums::EnumDefinition

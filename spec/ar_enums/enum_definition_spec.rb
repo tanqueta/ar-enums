@@ -83,7 +83,7 @@ end
 
 describe "External enumerations" do
   before do
-    define_model_class 'State', 'ActiveRecord::Enum' do
+    define_model_class 'State', 'ArEnums::Base' do
       enumeration do
         ca
         tx
@@ -94,7 +94,7 @@ describe "External enumerations" do
       enum :state
     end
     
-    define_model_class 'TrafficLightState', 'ActiveRecord::Enum' do
+    define_model_class 'TrafficLightState', 'ArEnums::Base' do
       enumeration do
         green :rgb => 0x0F0
         red :rgb => 0xF00
@@ -130,7 +130,7 @@ describe "External enumerations" do
     end
     
     it "should be posible to define new methods in Enum subclass" do
-      define_model_class 'State', 'ActiveRecord::Enum' do
+      define_model_class 'State', 'ArEnums::Base' do
         enumeration do
           green :factor => 1
           red :factor => 2

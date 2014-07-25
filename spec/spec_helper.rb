@@ -17,7 +17,7 @@ end
 
 RSpec::Matchers.define :be_enum_with do |expected_attrs|
   match do |enum|
-    enum.should be_a(ActiveRecord::Enum)
+    enum.should be_a(ArEnums::Base)
     expected_attrs.each do |atrib, expected_value|
       enum.send(atrib).should == expected_value
     end

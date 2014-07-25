@@ -2,42 +2,42 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 
 describe "Enum" do
   it "should provide :to_sym method returning name as symbols" do
-    ActiveRecord::Enum.new(:name => :green).to_sym.should == :green
+    ArEnums::Base.new(name: :green).to_sym.should == :green
   end
   
   it "should store extra columns as a hash without the :enum_class that is passed from other classes" do
-    ActiveRecord::Enum.new(:name => :green, :factor => 1.5, :enum_class => Class.new).extra_columns.should == { :factor => 1.5 }
+    ArEnums::Base.new(name: :green, factor: 1.5, enum_class: Class.new).extra_columns.should == { factor: 1.5 }
   end
 
   context "External enums" do
     before do
-      define_model_class 'Color', 'ActiveRecord::Enum' do
+      define_model_class 'Color', 'ArEnums::Base' do
         enumeration do
-          red :rgb => 0xF00
-          green :rgb => 0x0F0
-          blue :rgb => 0x00F
+          red rgb: 0xF00
+          green rgb: 0x0F0
+          blue rgb: 0x00F
         end
       end    
 
-      define_model_class 'State', 'ActiveRecord::Enum' do
+      define_model_class 'State', 'ArEnums::Base' do
         enumeration do
-          on :id => 80
-          off :id => 90
+          on id: 80
+          off id: 90
         end
       end    
     end
     
     it "should provide :all method to access the enums" do
-      Color.all[0].should be_enum_with(:name => 'red', :rgb => 0xF00)
-      Color.all[1].should be_enum_with(:name => 'green', :rgb => 0x0F0)
-      State.all[0].should be_enum_with(:name => 'on', :id => 80)
-      State.all[1].should be_enum_with(:name => 'off', :id => 90)
+      Color.all[0].should be_enum_with(name: 'red', rgb: 0xF00)
+      Color.all[1].should be_enum_with(name: 'green', rgb: 0x0F0)
+      State.all[0].should be_enum_with(name: 'on', id: 80)
+      State.all[1].should be_enum_with(name: 'off', id: 90)
     end
     
     it "should provide [] method to access the enums" do
-      Color[:red].should be_enum_with(:name => 'red')
-      Color['green'].should be_enum_with(:name => 'green')
-      Color[2].should be_enum_with(:name => 'green')
+      Color[:red].should be_enum_with(name: 'red')
+      Color['green'].should be_enum_with(name: 'green')
+      Color[2].should be_enum_with(name: 'green')
     end
   end
   
@@ -50,11 +50,11 @@ describe "Enum" do
   end
   
   it "in? should check if == to any" do
-    define_model_class 'Color', 'ActiveRecord::Enum' do
+    define_model_class 'Color', 'ArEnums::Base' do
       enumeration do
-        red :rgb => 0xF00
-        green :rgb => 0x0F0
-        blue :rgb => 0x00F
+        red rgb: 0xF00
+        green rgb: 0x0F0
+        blue rgb: 0x00F
       end
     end    
     
