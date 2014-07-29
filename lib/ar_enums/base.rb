@@ -1,5 +1,6 @@
 module ArEnums
   class Base
+    include Comparable
     extend OptionsHelper
     
     attr_reader :id, :name, :extra_columns
@@ -30,6 +31,10 @@ module ArEnums
     
     def hash
       id.hash
+    end
+
+    def <=> other
+      id <=> other.id
     end
     
     def to_s

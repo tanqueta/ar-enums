@@ -67,4 +67,9 @@ describe "Enum" do
   it "should work with sets" do
     Set.new([Color[:red]]).intersection(Set.new([Color[:red].dup])).should have(1).item
   end
+
+  it "should be sortable" do
+    [Color[:green], Color[:red]].sort.should == [Color[:red], Color[:green]]
+  end
+
 end
