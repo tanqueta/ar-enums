@@ -1,6 +1,6 @@
 # ar-enums
 
-This is a simple solution for defining enumerations in your Rails models.
+A simple solution for defining enumerations in your Rails models.
 
 [![Build Status](https://travis-ci.org/eeng/ar-enums.svg?branch=master)](https://travis-ci.org/eeng/ar-enums)
 
