@@ -1,12 +1,15 @@
-require 'rspec'
 require 'ar-enums'
 
+ActiveRecord::Migration.verbose = false
+
 RSpec.configure do |config|
+  config.expect_with(:rspec) { |c| c.syntax = :should }
+
   config.before :suite do
-    ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+    ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
     load(File.dirname(__FILE__) + "/schema.rb")
   end
-  
+
   def define_model_class(name = "TestClass", parent_class_name = "ActiveRecord::Base", &block)
   	ActiveSupport::Dependencies.send :remove_const, name rescue nil
   	eval("class #{name} < #{parent_class_name}; end", TOPLEVEL_BINDING)

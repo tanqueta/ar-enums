@@ -7,7 +7,7 @@ describe "Enums creation styles" do
     add_option config, class_name: ArEnums::Base
     ArEnums::Factory.make_enums *config, &block
   end
-  
+
   context "array of values style" do
     it "should generate ids" do
       enums = make_enums %w[red green blue]
@@ -15,23 +15,23 @@ describe "Enums creation styles" do
       enums[1].should be_enum_with(id: 2, name: 'green')
       enums[2].should be_enum_with(id: 3, name: 'blue')
     end
-    
+
     it "default to_s should be name titleized" do
-      make_enums(%w[green red]).map(&:to_s).should == %w[Green Red]      
+      make_enums(%w[green red]).map(&:to_s).should == %w[Green Red]
     end
 
     it "should override default to_s" do
       make_enums(%w[green red], label: :upcase).map(&:to_s).should == %w[GREEN RED]
     end
   end
-  
+
   context "array of hashes style" do
     it "should accept ids if provided" do
       enums = make_enums [{ id: 20, name: :red }, { id: 10, name: :green }]
       enums[0].should be_enum_with(id: 20, name: 'red')
       enums[1].should be_enum_with(id: 10, name: 'green')
     end
-    
+
     it "should generate ids if not provided" do
       enums = make_enums [{ name: :red }, { name: :green }]
       enums[0].should be_enum_with(id: 1, name: 'red')
@@ -41,18 +41,18 @@ describe "Enums creation styles" do
     it "default to_s should be :desc column" do
       enums = make_enums [{ name: :red, desc: 'Rojo' }, { name: :green, desc: 'Verde' }]
       enums.map(&:to_s).should == %w[Rojo Verde]
-    end      
-    
+    end
+
     it ":label options can be a method to call on name" do
       enums = make_enums [{ name: :red }, { name: :green }], label: :upcase
       enums.map(&:to_s).should == %w[RED GREEN]
-    end   
-       
+    end
+
     it ":label option can be a enum column" do
       enums = make_enums [{ name: :red, title: 'Rojo' }, { name: :green, title: 'Verde' }], label: :title
       enums.map(&:to_s).should == %w[Rojo Verde]
-    end      
-    
+    end
+
     it "should accept extra columns" do
       enums = make_enums [
         { name: :red, factor: 1.5, stop_traffic: true },
@@ -62,7 +62,7 @@ describe "Enums creation styles" do
       enums.map(&:stop_traffic).should == [true, false]
     end
   end
-  
+
   context "block style" do
     it "can be created with a block" do
       enums = make_enums do
@@ -71,8 +71,8 @@ describe "Enums creation styles" do
       end
       enums[0].should be_enum_with(id: 1, name: 'red', rgb: 0xF00)
       enums[1].should be_enum_with(id: 2, name: 'green', rgb: 0x0F0)
-    end    
-    
+    end
+
     it "should accept :label option" do
       enums = make_enums label: :title do
         red title: 'Rojo'
@@ -80,7 +80,7 @@ describe "Enums creation styles" do
       end
       enums.map(&:to_s).should == %w[Rojo Verde]
     end
-    
+
     it "should accept extra columns" do
       enums = make_enums do
         red factor: 1.5
