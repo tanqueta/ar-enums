@@ -19,7 +19,7 @@ describe "Enum" do
         end
       end
 
-      define_model_class 'State', 'ArEnums::Base' do
+      define_model_class 'StateClass', 'ArEnums::Base' do
         enumeration do
           on id: 80
           off id: 90
@@ -30,8 +30,8 @@ describe "Enum" do
     it "should provide :all method to access the enums" do
       Color.all[0].should be_enum_with(name: 'red', rgb: 0xF00)
       Color.all[1].should be_enum_with(name: 'green', rgb: 0x0F0)
-      State.all[0].should be_enum_with(name: 'on', id: 80)
-      State.all[1].should be_enum_with(name: 'off', id: 90)
+      StateClass.all[0].should be_enum_with(name: 'on', id: 80)
+      StateClass.all[1].should be_enum_with(name: 'off', id: 90)
     end
 
     it "should provide [] method to access the enums" do

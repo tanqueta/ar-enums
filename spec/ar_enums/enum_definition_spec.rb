@@ -3,7 +3,7 @@ require File.expand_path('../spec_helper', File.dirname(__FILE__))
 describe "Internal enumerations" do
   def define_traffic_light *options
     define_model_class 'TrafficLight' do
-      enum *options
+      ar_enum *options
     end
   end
 
@@ -66,7 +66,7 @@ describe "Internal enumerations" do
 
     it "block style should also provide question method" do
       define_model_class 'TrafficLight' do
-        enum :state do
+        ar_enum :state do
           green
           red
         end
@@ -91,7 +91,7 @@ describe "External enumerations" do
     end
 
     define_model_class 'Country' do
-      enum :state
+      ar_enum :state
     end
 
     define_model_class 'TrafficLightState', 'ArEnums::Base' do
@@ -102,7 +102,7 @@ describe "External enumerations" do
     end
 
     define_model_class 'TrafficLight' do
-      enum :state, class_name: 'TrafficLightState'
+      ar_enum :state, class_name: 'TrafficLightState'
     end
   end
 
@@ -118,8 +118,8 @@ describe "External enumerations" do
 
     it "should accept :class_name options to override de class of the external enum" do
       define_model_class 'TrafficLight' do
-        enum :state_on_weekdays, class_name: 'TrafficLightState'
-        enum :state_on_weekends, class_name: 'TrafficLightState'
+        ar_enum :state_on_weekdays, class_name: 'TrafficLightState'
+        ar_enum :state_on_weekends, class_name: 'TrafficLightState'
       end
       TrafficLight.state_on_weekdays.should equal(TrafficLightState.all)
       TrafficLight.state_on_weekends.should equal(TrafficLightState.all)
@@ -143,7 +143,7 @@ describe "External enumerations" do
 
     it "should not define new constant form enum class" do
       define_model_class 'TrafficLight' do
-        enum :estado, class_name: 'TrafficLightState'
+        ar_enum :estado, class_name: 'TrafficLightState'
       end
       lambda { TrafficLight.const_get(:Estado) }.should raise_error NameError
     end
